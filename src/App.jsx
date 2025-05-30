@@ -14,6 +14,7 @@ function App() {
     setAllTodo(prevValue => [...prevValue, singleTodo])
     // setAllTodo([...allTodos,singleTodo])
     saveTodoLocalStore([...allTodos, singleTodo])
+    setSingleTodo({ title: "", desc: "" })
   }
 
   function DeleteTodo(i) {
@@ -37,16 +38,26 @@ function App() {
     getTodoFromLocalStore()
   }, [])
 
+  function deleteAllTodo() {
+    setAllTodo([])
+    saveTodoLocalStore([])
+
+  }
+
   return (
     <>
 
-      <div className=" bg-gray-800 w-screen min-h-screen  text-center" >
-        <h1 className="text-4xl pt-10">Todo APP</h1>
+      <div className=" bg-gray-800 max-w-screen min-h-screen  text-center overflow-hidden" >
+        <h1 className="text-4xl pt-10 text-cyan-400 font-bold ">Todo App</h1>
         <div className="mt-10">
+
+          {/* titile */}
+
           <input
             className="text-2xl bg-white px-[1.5rem] py-1 focus:outline-none rounded-md capitalize"
             type="text"
             placeholder="title"
+            value={singleTodo.title}
             onChange={
               (e) => setSingleTodo((prevValue) =>
               (
@@ -66,10 +77,14 @@ function App() {
           />
           <br />
           <br />
+
+          {/* Description */}
+
           <input
             className="text-2xl bg-white px-[1.5rem] py-1 focus:outline-none rounded-md capitalize"
             type="text"
             placeholder="description"
+            value={singleTodo.desc}
             onChange={
               (e) => setSingleTodo((prevValue) => (
                 {
@@ -94,23 +109,55 @@ function App() {
           >Add Todo</button>
         </div>
 
-        <div className="w-[50%] mx-auto">
+        <div className="w-[100%] sm:w-[70%] md:w-[50%] lg:w-[40%]  mx-auto mt-10 ">
           {
             allTodos.map((data, i) => (
-              <div key={i}>
-                <p>{i + 1}</p>
-                <h1>{data.title}</h1>
-                <h1>{data.desc}</h1>
+              <div
+                className=" bg-slate-500/45  m-4 flex items-center justify-around rounded-lg "
+                key={i}>
+
+                <div
+                  className=" flex gap-5 w-[70%] overflow-hidden "
+                >
+                  <p>{i + 1}</p>
+
+                  <div className=" flex flex-col items-start gap-1 rounded-2xl">
+                    <h1
+                      className=" capitalize text-2xl font-medium "
+                    >{data.title}
+                    </h1>
+                    <p
+                      className=" text-xl text-gray-400 "
+                    >{data.desc}
+                    </p>
+                  </div>
+                </div>
+
                 <button
+                  className="capitalize bg-red-600 text-white rounded-md  px-3 py-3"
                   onClick={
                     () => DeleteTodo(i)
                   }
-                >Delete</button>
+                >Delete
+                  <i className="fi fi-rs-trash p-2"></i>
+                </button>
               </div>
             ))
           }
         </div>
+        <div>
+          {
+            allTodos.length > 0 &&
+            (
+              <button
+                className=" text-2xl bg-red-500 text-white px-4 py-2 rounded-md "
+                onClick={deleteAllTodo}
+              >Delete All
+              </button>
+            )}
+        </div>
       </div>
+
     </>
   )
 }
